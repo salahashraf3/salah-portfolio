@@ -8,6 +8,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function(){
+  var saved=null;
+  try{saved=localStorage.getItem('portfolio-theme')}catch(e){}
+  var systemDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.dataset.theme=saved==='light'||saved==='dark'?saved:(systemDark?'dark':'light');
+})();
+</script>
 <style>
 :root{
   --bg:#f2f0e9;
@@ -16,10 +24,32 @@
   --muted:#66635d;
   --line:rgba(17,17,15,.18);
   --accent:#2d55ff;
+  --nav-bg:rgba(242,240,233,.88);
+  --nav-bg-scrolled:rgba(242,240,233,.94);
+  --contact-bg:#11110f;
+  --contact-ink:#f2f0e9;
+  --contact-muted:#aaa79f;
+  --contact-line:rgba(242,240,233,.2);
+  color-scheme:light;
   --display:'Archivo',Arial,sans-serif;
   --serif:'Instrument Serif',Georgia,serif;
   --body:'Archivo',-apple-system,sans-serif;
   --mono:'JetBrains Mono',monospace;
+}
+:root[data-theme="dark"]{
+  --bg:#0d0d0c;
+  --panel:#171714;
+  --ink:#f2f0e9;
+  --muted:#aaa79f;
+  --line:rgba(242,240,233,.2);
+  --accent:#8aa2ff;
+  --nav-bg:rgba(13,13,12,.88);
+  --nav-bg-scrolled:rgba(13,13,12,.94);
+  --contact-bg:#f2f0e9;
+  --contact-ink:#11110f;
+  --contact-muted:#66635d;
+  --contact-line:rgba(17,17,15,.2);
+  color-scheme:dark;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -29,6 +59,7 @@ body{
 }
 ::selection{background:var(--accent);color:#fff}
 a{color:inherit;text-decoration:none}
+.theme-ready body,.theme-ready nav,.theme-ready .ticker,.theme-ready .contact,.theme-ready .theme-toggle{transition:background-color .35s ease,color .35s ease,border-color .35s ease}
 
 /* film grain */
 body::after{
@@ -305,9 +336,10 @@ footer a:hover{color:var(--accent)}
 html{scroll-padding-top:80px}
 body{cursor:default}
 body::after{mix-blend-mode:multiply}
+:root[data-theme="dark"] body::after{mix-blend-mode:screen;opacity:.025}
 .wrap{max-width:1600px;padding-left:clamp(20px,3vw,52px);padding-right:clamp(20px,3vw,52px)}
-nav{mix-blend-mode:normal;background:rgba(242,240,233,.88);border-bottom:1px solid var(--line)}
-nav.scrolled{background:rgba(242,240,233,.92);border-bottom-color:var(--line)}
+nav{mix-blend-mode:normal;background:var(--nav-bg);border-bottom:1px solid var(--line)}
+nav.scrolled{background:var(--nav-bg-scrolled);border-bottom-color:var(--line)}
 .brand{font-family:var(--body);font-weight:800;letter-spacing:-.04em;text-transform:none}
 .brand em{font-family:var(--serif);font-weight:400}
 .nav-links a,.nav-meta{color:var(--ink)}
@@ -348,23 +380,33 @@ section{padding:clamp(90px,11vw,170px) 0}
 .stat-strip{border-top:2px solid var(--ink)}
 .stat-cell .num{font-family:var(--serif);font-style:italic;color:var(--accent)}
 .skill-col .k{color:var(--accent)}
-.contact{background:var(--ink);color:var(--bg);padding-top:120px}
-.contact .mono,.contact-sub,.contact-links a,footer{color:#aaa79f}
-.contact-sub b{color:var(--bg)}
+.contact{background:var(--contact-bg);color:var(--contact-ink);padding-top:120px}
+.contact .mono,.contact-sub,.contact-links a,footer{color:var(--contact-muted)}
+.contact-sub b{color:var(--contact-ink)}
 .contact-big{font-size:clamp(66px,12vw,190px);font-weight:800;letter-spacing:-.075em}
-.contact-links,footer{border-color:rgba(242,240,233,.2)}
-.contact-links a{border-color:rgba(242,240,233,.2)}
-.contact-big a:hover{color:var(--bg)}
-.contact-big a:hover .row2{color:var(--bg)}
+.contact-links,footer{border-color:var(--contact-line)}
+.contact-links a{border-color:var(--contact-line)}
+.contact-big a:hover{color:var(--contact-ink)}
+.contact-big a:hover .row2{color:var(--contact-ink)}
 .cursor-label{position:fixed;z-index:180;left:0;top:0;width:88px;height:88px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:var(--bg);font:500 10px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.6);transition:opacity .2s,transform .2s}
 .cursor-label.show{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.theme-toggle{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:transparent;color:var(--ink);cursor:pointer;position:relative;overflow:hidden}
+.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
+.theme-toggle:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.theme-toggle svg{width:18px;height:18px;position:absolute;transition:transform .35s cubic-bezier(.22,1,.36,1),opacity .25s}
+.theme-toggle .sun{opacity:0;transform:rotate(-70deg) scale(.55)}
+.theme-toggle .moon{opacity:1;transform:rotate(0) scale(1)}
+:root[data-theme="dark"] .theme-toggle .sun{opacity:1;transform:rotate(0) scale(1)}
+:root[data-theme="dark"] .theme-toggle .moon{opacity:0;transform:rotate(70deg) scale(.55)}
+.sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
 @media(max-width:900px){
  .folio,.cursor-label{display:none}.hero{min-height:auto;padding-top:130px}.hero-name .line1{padding-left:0}.hero-name .line2{padding-right:0;text-align:left}.hero-bottom{grid-template-columns:1fr}.work-row{grid-template-columns:42px 1fr 30px}.hero-loc{font-size:9px}.ticker{margin-top:55px}.sec-title{font-size:clamp(46px,14vw,80px)}
 }
 @media(max-width:520px){
+ .nav-meta{display:none}.theme-toggle{width:38px;height:38px;flex-basis:38px}.nav-inner{gap:14px}
  .hero-name{font-size:clamp(70px,24vw,110px);line-height:.8}.hero-top{margin-bottom:54px}.hero-bottom{margin-top:58px}.work-row .name{font-size:34px}.about-statement{font-size:31px}.sec-head{align-items:flex-start;flex-direction:column}.sec-head .mono{order:-1}.contact-big{font-size:22vw}
 }
-@media(prefers-reduced-motion:reduce){.scroll-progress{display:none}.cursor-label{display:none}}
+@media(prefers-reduced-motion:reduce){.scroll-progress{display:none}.cursor-label{display:none}.theme-toggle svg{transition:none}.theme-ready body,.theme-ready nav,.theme-ready .ticker,.theme-ready .contact,.theme-ready .theme-toggle{transition:none}}
 
 </style>
 </head>
@@ -385,6 +427,11 @@ section{padding:clamp(90px,11vw,170px) 0}
       <a href="#contact"><sup>05</sup>Contact</a>
     </div>
     <div class="nav-meta">Kerala, IN - <b id="clock">--:--</b></div>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to dark theme" aria-pressed="false" title="Switch to dark theme">
+      <svg class="sun" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
+      <svg class="moon" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5 8.5 8.5 0 1 0 20.5 14.2Z"/></svg>
+      <span class="sr-only">Toggle color theme</span>
+    </button>
   </div>
 </nav>
 
@@ -620,6 +667,29 @@ section{padding:clamp(90px,11vw,170px) 0}
 </section>
 
 <script>
+// Color theme: follow the device until the visitor makes a choice, then remember it.
+(function(){
+  var root=document.documentElement,button=document.getElementById('theme-toggle');
+  var media=window.matchMedia?window.matchMedia('(prefers-color-scheme: dark)'):null;
+  function stored(){try{return localStorage.getItem('portfolio-theme')}catch(e){return null}}
+  function paint(theme){
+    root.dataset.theme=theme;
+    var dark=theme==='dark';
+    button.setAttribute('aria-pressed',dark?'true':'false');
+    button.setAttribute('aria-label',dark?'Switch to light theme':'Switch to dark theme');
+    button.title=dark?'Switch to light theme':'Switch to dark theme';
+  }
+  paint(root.dataset.theme||'light');
+  requestAnimationFrame(function(){root.classList.add('theme-ready')});
+  button.addEventListener('click',function(){
+    var next=root.dataset.theme==='dark'?'light':'dark';
+    try{localStorage.setItem('portfolio-theme',next)}catch(e){}
+    paint(next);
+  });
+  function systemChanged(e){if(!stored())paint(e.matches?'dark':'light')}
+  if(media){if(media.addEventListener)media.addEventListener('change',systemChanged);else if(media.addListener)media.addListener(systemChanged)}
+})();
+
 // duplicate ticker content for seamless loop
 (function(){
   var t=document.getElementById('ticker-track');
