@@ -408,6 +408,39 @@ section{padding:clamp(90px,11vw,170px) 0}
 }
 @media(prefers-reduced-motion:reduce){.scroll-progress{display:none}.cursor-label{display:none}.theme-toggle svg{transition:none}.theme-ready body,.theme-ready nav,.theme-ready .ticker,.theme-ready .contact,.theme-ready .theme-toggle{transition:none}}
 
+
+/* ---------- HERO SYSTEM GRAPHIC ---------- */
+.hero-system{margin-top:clamp(36px,5vw,72px);position:relative}
+.js .hero-system{opacity:0;transform:translateY(16px)}
+.js.page-ready .hero-system{animation:heroIn .7s .34s cubic-bezier(.22,1,.36,1) forwards}
+.sys-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-bottom:20px}
+.sys-head .mono{color:var(--muted)}
+.sys-head .mono b{color:var(--accent);font-weight:500}
+.sys-hint{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.sys-svg{display:block;width:100%;height:auto}
+.sys-tall{display:none}
+.sys-edge{fill:none;stroke:var(--line);stroke-width:1;transition:stroke .3s}
+.sys-edge.lit{stroke:var(--accent)}
+.sys-node{cursor:pointer;outline:none;-webkit-tap-highlight-color:transparent}
+.sys-node rect{fill:var(--panel);stroke:var(--line);stroke-width:1;transition:stroke .3s,fill .3s}
+.sys-node .nl{fill:var(--ink);font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;transition:fill .3s}
+.sys-node .sl{fill:var(--muted);font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase}
+.sys-node text{text-anchor:middle;pointer-events:none}
+.sys-node.active rect{stroke:var(--accent)}
+.sys-node.active .nl{fill:var(--accent)}
+.sys-node:focus-visible rect{stroke:var(--accent);stroke-dasharray:5 4}
+.sys-packet{fill:var(--accent)}
+.sys-cap{margin-top:18px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);min-height:2.2em;line-height:1.7}
+@media(max-width:900px){
+  .sys-wide{display:none}
+  .sys-tall{display:block;max-width:420px;margin:0 auto}
+  .hero-system{margin-top:52px}
+}
+@media (prefers-reduced-motion:reduce){
+  .sys-packet{display:none}
+  .js .hero-system{opacity:1!important;transform:none!important;animation:none!important}
+}
+
 </style>
 </head>
 <body>
@@ -445,6 +478,91 @@ section{padding:clamp(90px,11vw,170px) 0}
       <span class="line1">Salah</span>
       <span class="line2">Ashraf</span>
     </h1>
+    <div class="hero-system" id="hero-system">
+      <div class="sys-head">
+        <div class="mono"><b>SYS.01</b> / Production topology</div>
+        <div class="sys-hint">Explore the layers</div>
+      </div>
+      <svg class="sys-svg sys-wide" viewBox="0 0 1200 150" role="group" aria-label="Diagram of the systems Salah builds: storefront, edge, services, queue, and data layers">
+        <g class="sys-edges" aria-hidden="true">
+          <path class="sys-edge" data-a="storefront" data-b="edge" d="M190 85 H290"/>
+          <path class="sys-edge" data-a="edge" data-b="services" d="M440 85 H540"/>
+          <path class="sys-edge" data-a="services" data-b="queue" d="M690 85 H790"/>
+          <path class="sys-edge" data-a="queue" data-b="data" d="M940 85 H1040"/>
+        </g>
+        <g class="sys-packets" aria-hidden="true">
+          <circle class="sys-packet" r="3.5"><animateMotion dur="2.8s" begin="0s" repeatCount="indefinite" path="M190 85 H290"/></circle>
+          <circle class="sys-packet" r="3.5"><animateMotion dur="2.8s" begin="0.7s" repeatCount="indefinite" path="M440 85 H540"/></circle>
+          <circle class="sys-packet" r="3.5"><animateMotion dur="2.8s" begin="1.4s" repeatCount="indefinite" path="M690 85 H790"/></circle>
+          <circle class="sys-packet" r="3.5"><animateMotion dur="2.8s" begin="2.1s" repeatCount="indefinite" path="M940 85 H1040"/></circle>
+        </g>
+        <g class="sys-node" data-node="storefront" tabindex="0" aria-label="Storefront layer: Theme App Extensions">
+          <rect x="40" y="62" width="150" height="46" rx="2"/>
+          <text class="nl" x="115" y="90">Storefront</text>
+          <text class="sl" x="115" y="130">Theme App Extensions</text>
+        </g>
+        <g class="sys-node" data-node="edge" tabindex="0" aria-label="Edge layer: Cloudflare and caching">
+          <rect x="290" y="62" width="150" height="46" rx="2"/>
+          <text class="nl" x="365" y="90">Edge</text>
+          <text class="sl" x="365" y="130">Cloudflare / Cache</text>
+        </g>
+        <g class="sys-node" data-node="services" tabindex="0" aria-label="Services layer: Node.js and NestJS microservices">
+          <rect x="540" y="62" width="150" height="46" rx="2"/>
+          <text class="nl" x="615" y="90">Services</text>
+          <text class="sl" x="615" y="130">Node.js / NestJS</text>
+        </g>
+        <g class="sys-node" data-node="queue" tabindex="0" aria-label="Queue layer: Redis and RabbitMQ">
+          <rect x="790" y="62" width="150" height="46" rx="2"/>
+          <text class="nl" x="865" y="90">Queue</text>
+          <text class="sl" x="865" y="130">Redis / RabbitMQ</text>
+        </g>
+        <g class="sys-node" data-node="data" tabindex="0" aria-label="Data layer: PostgreSQL and ClickHouse">
+          <rect x="1040" y="62" width="150" height="46" rx="2"/>
+          <text class="nl" x="1115" y="90">Data</text>
+          <text class="sl" x="1115" y="130">Postgres / ClickHouse</text>
+        </g>
+      </svg>
+      <svg class="sys-svg sys-tall" viewBox="0 0 360 442" role="group" aria-label="Diagram of the systems Salah builds: storefront, edge, services, queue, and data layers">
+        <g class="sys-edges" aria-hidden="true">
+          <path class="sys-edge" data-a="storefront" data-b="edge" d="M180 66 V110"/>
+          <path class="sys-edge" data-a="edge" data-b="services" d="M180 156 V200"/>
+          <path class="sys-edge" data-a="services" data-b="queue" d="M180 246 V290"/>
+          <path class="sys-edge" data-a="queue" data-b="data" d="M180 336 V380"/>
+        </g>
+        <g class="sys-packets" aria-hidden="true">
+          <circle class="sys-packet" r="3.5"><animateMotion dur="2.2s" begin="0s" repeatCount="indefinite" path="M180 66 V110"/></circle>
+          <circle class="sys-packet" r="3.5"><animateMotion dur="2.2s" begin="0.55s" repeatCount="indefinite" path="M180 156 V200"/></circle>
+          <circle class="sys-packet" r="3.5"><animateMotion dur="2.2s" begin="1.1s" repeatCount="indefinite" path="M180 246 V290"/></circle>
+          <circle class="sys-packet" r="3.5"><animateMotion dur="2.2s" begin="1.65s" repeatCount="indefinite" path="M180 336 V380"/></circle>
+        </g>
+        <g class="sys-node" data-node="storefront" tabindex="0" aria-label="Storefront layer: Theme App Extensions">
+          <rect x="60" y="20" width="240" height="46" rx="2"/>
+          <text class="nl" x="180" y="41">Storefront</text>
+          <text class="sl" x="180" y="57">Theme App Extensions</text>
+        </g>
+        <g class="sys-node" data-node="edge" tabindex="0" aria-label="Edge layer: Cloudflare and caching">
+          <rect x="60" y="110" width="240" height="46" rx="2"/>
+          <text class="nl" x="180" y="131">Edge</text>
+          <text class="sl" x="180" y="147">Cloudflare / Cache</text>
+        </g>
+        <g class="sys-node" data-node="services" tabindex="0" aria-label="Services layer: Node.js and NestJS microservices">
+          <rect x="60" y="200" width="240" height="46" rx="2"/>
+          <text class="nl" x="180" y="221">Services</text>
+          <text class="sl" x="180" y="237">Node.js / NestJS</text>
+        </g>
+        <g class="sys-node" data-node="queue" tabindex="0" aria-label="Queue layer: Redis and RabbitMQ">
+          <rect x="60" y="290" width="240" height="46" rx="2"/>
+          <text class="nl" x="180" y="311">Queue</text>
+          <text class="sl" x="180" y="327">Redis / RabbitMQ</text>
+        </g>
+        <g class="sys-node" data-node="data" tabindex="0" aria-label="Data layer: PostgreSQL and ClickHouse">
+          <rect x="60" y="380" width="240" height="46" rx="2"/>
+          <text class="nl" x="180" y="401">Data</text>
+          <text class="sl" x="180" y="417">Postgres / ClickHouse</text>
+        </g>
+      </svg>
+      <p class="sys-cap" id="sys-cap" aria-live="polite">Five layers, one system - storefront to data, built to stay fast under real traffic.</p>
+    </div>
     <div class="hero-bottom">
       <div class="hero-role">Full Stack<br><em>Engineer</em></div>
       <p class="hero-desc">I build <b>production Shopify apps, headless commerce platforms, and cloud-native web systems</b> used by 5,000+ ecommerce stores. Node.js, TypeScript, React, Next.js, NestJS, AWS.</p>
@@ -769,5 +887,47 @@ requestAnimationFrame(function(){document.documentElement.classList.add('page-re
 })();
 
 </script>
+<script>
+// Hero system graphic: hovering or focusing a layer lights its connections and explains it.
+(function(){
+  var cap=document.getElementById('sys-cap');
+  if(!cap)return;
+  var COPY={
+    'default':'Five layers, one system - storefront to data, built to stay fast under real traffic.',
+    'storefront':'Storefront - Theme App Extensions render labels and shoppable video across 5,000+ stores.',
+    'edge':'Edge - Multi-layer caching (CDN, Redis, in-memory) cut load times by ~70%.',
+    'services':'Services - A six-service Node.js pipeline with health monitoring and orchestration.',
+    'queue':'Queue - Redis-based distributed queues with leader election keep jobs exactly-once.',
+    'data':'Data - PostgreSQL for systems of record; ClickHouse for conversion analytics.'
+  };
+  function clearAll(){
+    var act=document.querySelectorAll('.sys-node.active');
+    for(var i=0;i<act.length;i++)act[i].classList.remove('active');
+    var lit=document.querySelectorAll('.sys-edge.lit');
+    for(var j=0;j<lit.length;j++)lit[j].classList.remove('lit');
+    cap.textContent=COPY['default'];
+  }
+  function activate(key){
+    clearAll();
+    var ns=document.querySelectorAll('.sys-node[data-node="'+key+'"]');
+    for(var i=0;i<ns.length;i++)ns[i].classList.add('active');
+    var es=document.querySelectorAll('.sys-edge[data-a="'+key+'"],.sys-edge[data-b="'+key+'"]');
+    for(var j=0;j<es.length;j++)es[j].classList.add('lit');
+    cap.textContent=COPY[key]||COPY['default'];
+  }
+  var nodes=document.querySelectorAll('.sys-node');
+  for(var i=0;i<nodes.length;i++){
+    (function(node){
+      var key=node.getAttribute('data-node');
+      node.addEventListener('pointerenter',function(){activate(key)});
+      node.addEventListener('focus',function(){activate(key)});
+      node.addEventListener('click',function(){activate(key)});
+      node.addEventListener('pointerleave',clearAll);
+      node.addEventListener('blur',clearAll);
+    })(nodes[i]);
+  }
+})();
+</script>
+
 </body>
 </html>
